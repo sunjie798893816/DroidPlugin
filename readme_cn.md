@@ -1,19 +1,22 @@
 Droid Plugin
 ======
 
-DroidPlugin 是***360手机助手***在Android系统上实现了一种新的***插件机制***:它可以在无需安装、修改的情况下运行APK文件,此机制对改进大型APP的架构，实现多团队协作开发具有一定的好处。
+DroidPlugin 是Andy Zhang在Android系统上实现了一种新的 插件机制 :它可以在无需安装、修改的情况下运行APK文件,此机制对改进大型APP的架构，实现多团队协作开发具有一定的好处。
 -------
 
+[在Github上关注我](https://github.com/cmzy)
 
+为了让跟多的人参与到此项目，我们把项目迁移到一个新的组织DroidPlugin。
+项目新地址:[DroidPlugin](https://github.com/DroidPluginTeam/DroidPlugin "DroidPlugin")
 
-##定义：
+## 定义：
 
    
    **HOST程序**：插件的宿主。
    
    **插件**：免安装运行的APK
 
-##限制和缺陷:
+## 限制和缺陷:
     
  1. 无法在插件中发送具有自定义资源的`Notification`，例如： 
      a.  带自定义RemoteLayout的Notification
@@ -21,7 +24,7 @@ DroidPlugin 是***360手机助手***在Android系统上实现了一种新的***�
  2. 无法在插件中注册一些具有特殊Intent Filter的`Service`、`Activity`、`BroadcastReceiver`、`ContentProvider`等组件以供Android系统、已经安装的其他APP调用。
  3. 缺乏对Native层的Hook，对某些带native代码的apk支持不好，可能无法运行。比如一部分游戏无法当作插件运行。      
     
-##特点：
+## 特点：
   1. 支持Androd 2.3以上系统
   2. 插件APK完全不需做任何修改，可以独立安装运行、也可以做插件运行。要以插件模式运行某个APK，你**无需**重新编译、无需知道其源码。
   3. 插件的四大组件完全不需要在Host程序中注册，支持Service、Activity、BroadcastReceiver、ContentProvider四大组件
@@ -33,9 +36,9 @@ DroidPlugin 是***360手机助手***在Android系统上实现了一种新的***�
   9. 实现了进程管理，插件的空进程会被及时回收，占用内存低。
   10. 插件的静态广播会被当作动态处理，如果插件没有运行（即没有插件进程运行），其静态广播也永远不会被触发。
     
-##使用方法：
+## 使用方法：
 
-####集成
+#### 集成
 
 在host中集成Droid Plugin项目非常简单：
 
@@ -65,28 +68,11 @@ DroidPlugin 是***360手机助手***在Android系统上实现了一种新的***�
             super.attachBaseContext(base);
 	    }
 
-4.  将插件中`Libraries\DroidPlugin\AndroidManifest.xml`中**所有**的`provider`对应的`authorities`修改成自己的，默认为`com.morgoo.droidplugin_stub_P00`，如下：
-
-	    <provider
-            android:name="com.morgoo.droidplugin.stub.ContentProviderStub$StubP00"
-            android:authorities="com.morgoo.droidplugin_stub_P00"
-            android:exported="false"
-            android:label="@string/stub_name_povider" />
-
-	可以修改为自己的包名，如: `com.example.droidplugin_stub_P00` 防止跟其它本插件使用者冲突：
-
-	    <provider
-            android:name="com.morgoo.droidplugin.stub.ContentProviderStub$StubP00"
-            android:authorities="com.example.droidplugin_stub_P00"
-            android:exported="false"
-            android:label="@string/stub_name_povider" />
-    并且修改```PluginManager.STUB_AUTHORITY_NAME``` 为你的值:
-
-		PluginManager.STUB_AUTHORITY_NAME="com.example.droidplugin_stub"
+4.  修改 `Libraries\DroidPlugin\build.gradle` 的 defaultConfig 配置中 `authorityName` 的值（建议改为自己的包名+标识，防止跟其它本插件使用者冲突）
 
 5.  集成完成。
 
-####安装、卸载插件：
+#### 安装、卸载插件：
 
 1. **安装、更新插件**,使用如下方法：
 
@@ -106,11 +92,17 @@ DroidPlugin 是***360手机助手***在Android系统上实现了一种新的***�
 3. **启动插件**：启动插件的`Activity`、`Service`等都和你启动一个以及安装在系统中的app一样，使用系统提供的相关API即可。组件间通讯也是如此。
     
 
-##实现原理：
+## 实现原理：
     
- 请参见源码
+  请参见源码或者感兴趣的可以瞅瞅DOC目录下开源分析文章
 
-##谁在使用：
+ 
+## FAQ
+	
+ [FAQ](https://github.com/DroidPluginTeam/DroidPlugin/wiki/FAQ "FAQ")
+	
+
+## 谁在使用：
 	
  [360手机助手](http://sj.360.cn "360手机助手")
 
